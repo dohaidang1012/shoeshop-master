@@ -24,7 +24,6 @@ function Product(props) {
         const action =  DeleteQtyProduct(product)
         dispatch(action)
     }
-
     return (
         <div className="shopping-cart-list-product">
             <div className="shopping-cart-list-product-block">
@@ -36,7 +35,15 @@ function Product(props) {
                         {product.name}
                     </p>
                     <p className="product-price">
-                        {formatPrice(product.salePrice)}
+                        {formatPrice(product?.salePrice)}
+                    </p>
+                    <p className="product-price">
+                        <span>Size: </span>
+                        {formatPrice(product?.sizeSelected)}
+                    </p>
+                    <p className="product-price">
+                        <span>Color: </span>
+                        {product?.colorSelected?.toUpperCase()}
                     </p>
                 </div>
                 

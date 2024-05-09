@@ -125,11 +125,11 @@
 
     box-shadow: 4px 3px 4px -5px;
 }
-.menu-drop a{
+.menu-drop > p{
     padding: .3rem 1rem;
     color: #333;
 }
-.menu-drop a:hover{
+.menu-drop p:hover a{
     background: #353b48;
     color: #fff;
 }
@@ -221,6 +221,11 @@
     line-height: 20px;
     text-align: center;
     border-radius: 100%;
+}
+
+.menu-link {
+    padding: 4px 2px;
+    border-radius: 4px;
 }
 
 @media screen and (max-width: 800px){

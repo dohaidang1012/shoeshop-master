@@ -90,9 +90,9 @@ function Header(props) {
               </Link>
               {showAccount2 ? (
                 <div className="menu-drop">
-                  {userInfo.isAdmin ? <Link to="/admin">Admin</Link> : ""}
-                  <Link to="/myOrder">Đơn hàng</Link>
-                  <Link onClick={() => handleSignout()}>Đăng xuất</Link>
+                  <p className="menu-link">{userInfo.isAdmin ? <Link to="/admin" >Admin</Link> : ""  }</p> 
+                  <p className="menu-link"><Link to="/myOrder" >Đơn hàng</Link></p>
+                  <p className="menu-link"><Link onClick={() => handleSignout()} >Đăng xuất</Link></p>
                 </div>
               ) : (
                 ""

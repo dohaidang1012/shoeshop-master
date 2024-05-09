@@ -1,32 +1,38 @@
 import { OrderModel } from "../models/OrderModel.js";
 import expressAsyncHandler from "express-async-handler";
 import dotenv from "dotenv";
-
 import querystring from "qs";
 import sha256 from "sha256";
 import dateFormat from "dateformat";
 import crypto from 'crypto'
+import moment from "moment";
 
-const tmnCode = process.env.VNP_TMN_CODE;
-const secretKey = process.env.VNP_HASH_SECRET;
-const url = process.env.VNP_URL;
-const returnUrl = process.env.VNP_RETURN_URL;
+let tmnCode = process.env.VNP_TMN_CODE;
+let secretKey = process.env.VNP_HASH_SECRET;
+let vnpUrl  = process.env.VNP_URL;
+let returnUrl = process.env.VNP_RETURN_URL;
 
 export const createPayment = expressAsyncHandler(async (req, res) => {
-  console.log('createPayment')
-  let ipAddr =
-    req.headers["x-forwarded-for"] ||
-    req.connection.remoteAddress ||
-    req.socket.remoteAddress ||
-    req.connection.socket.remoteAddress;
+  let urlFinal = vnpUrl
+  console.log(req.body)
+  const orderItems = req.body.orderItems.map(item => {
+    return {
+      name: item.name,
+      qty: item.qty,
+      image: item.image,
+      salePrice: item.salePrice,
+      product: item,
+      color: item.colorSelected,
+      size: item.sizeSelected
+    }
+  })
 
   const order = new OrderModel({
     order_code: "",
     to_ward_code: req.body.to_ward_code,
     to_district_id: req.body.to_district_id,
     cancelOrder: false,
-
-    orderItems: req.body.orderItems,
+    orderItems: orderItems,
     shippingAddress: {
       province: req.body.shippingAddress?.province || '',
       district: req.body.shippingAddress?.district  || '',
@@ -52,71 +58,54 @@ export const createPayment = expressAsyncHandler(async (req, res) => {
 
   order.save();
 
-  let vnpUrl = url;
-  const date = new Date();
+  // 
+  process.env.TZ = "Asia/Ho_Chi_Minh";
 
-  const createDate = dateFormat(date, "yyyymmddHHmmss");
-  const orderId = order._id.toString();
-  console.log({orderId})
-  // var orderId = dateFormat(date, 'HHmmss');
+  let date = new Date();
+  let createDate = moment(date).format("YYYYMMDDHHmmss");
 
-  var locale = "vn";
-  var currCode = "VND";
-  var vnp_Params = {};
+  let ipAddr =
+    req.headers["x-forwarded-for"] ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    req.connection.socket.remoteAddress;
+
+
+  let orderId = req.body.orderId || order._id.toString();
+  let amount = req.body.totalPrice * 100;
+  // let bankCode = req.body.bankCode || "NCB";
+
+  let locale = req.body.language || 'vn';
+  if (locale === null || locale === "") {
+    locale = "vn";
+  }
+  let currCode = "VND";
+  let vnp_Params = {};
   vnp_Params["vnp_Version"] = "2.1.0";
   vnp_Params["vnp_Command"] = "pay";
   vnp_Params["vnp_TmnCode"] = tmnCode;
-
   vnp_Params["vnp_Locale"] = locale;
   vnp_Params["vnp_CurrCode"] = currCode;
   vnp_Params["vnp_TxnRef"] = orderId;
-  vnp_Params["vnp_OrderInfo"] = "DEMO";
+  vnp_Params["vnp_OrderInfo"] = "ThanhtoanchomaGD:" + orderId;
   vnp_Params["vnp_OrderType"] = "billpayment";
-  vnp_Params["vnp_Amount"] = 10000000;
+  vnp_Params["vnp_Amount"] = amount;
   vnp_Params["vnp_ReturnUrl"] = returnUrl;
   vnp_Params["vnp_IpAddr"] = ipAddr;
   vnp_Params["vnp_CreateDate"] = createDate;
-  vnp_Params["vnp_BankCode"] = "NCB";
-
-  // new
-  // var vnp_Params = {};
-  // vnp_Params['vnp_Version'] = '2.1.0';
-  // vnp_Params['vnp_Command'] = 'pay';
-  // vnp_Params['vnp_TmnCode'] = tmnCode;
-  // vnp_Params['vnp_Locale'] = locale;
-
-  // vnp_Params['vnp_CurrCode'] = currCode;
-  // vnp_Params['vnp_TxnRef'] = orderId;
-  // vnp_Params['vnp_OrderInfo'] = "Nap tien cho thue bao 0123456789";;
-  // vnp_Params['vnp_OrderType'] = "billpayment";
-  // vnp_Params['vnp_Amount'] = 10000000 * 100;
-  // vnp_Params['vnp_ReturnUrl'] = returnUrl;
-  // vnp_Params['vnp_IpAddr'] = ipAddr;
-  // vnp_Params['vnp_CreateDate'] = createDate;
-  // vnp_Params["vnp_BankCode"] = "NCB";
-  // end
+  // if (bankCode !== null && bankCode !== "") {
+  //   vnp_Params["vnp_BankCode"] = bankCode;
+  // }
 
   vnp_Params = sortObject(vnp_Params);
 
-  var signData =
-    secretKey + querystring.stringify(vnp_Params, { encode: false });
-
-  // new code
-  // var hmac = crypto.createHmac("sha512", secretKey);
-  // console.log({hmac})
-  // var signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex"); 
-  // vnp_Params['vnp_SecureHash'] = signed;
-  // vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
-  // end
-
-  var secureHash = sha256(signData);
-
-  vnp_Params["vnp_SecureHashType"] = "SHA256";
-  vnp_Params["vnp_SecureHash"] = secureHash;
-  vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
-  console.log({ code: "00", data: vnpUrl })
-
-  res.status(200).json({ code: "00", data: vnpUrl });
+  let signData = querystring.stringify(vnp_Params, { encode: false });
+  let hmac = crypto.createHmac("sha512", secretKey);
+  let signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
+  vnp_Params["vnp_SecureHash"] = signed;
+  urlFinal  += "?" + querystring.stringify(vnp_Params, { encode: false });
+  // Nối querystring với URL
+  res.status(200).json({ code: "00", data: urlFinal  });
 });
 
 export const returnPayment = expressAsyncHandler(async (req, res) => {
@@ -189,21 +178,18 @@ export const inpPayment = async (req, res) => {
   }
 };
 
-function sortObject(o) {
-  var sorted = {},
-    key,
-    a = [];
-
-  for (key in o) {
-    if (o.hasOwnProperty(key)) {
-      a.push(key);
+function sortObject(obj) {
+  let sorted = {};
+  let str = [];
+  let key;
+  for (key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      str.push(encodeURIComponent(key));
     }
   }
-
-  a.sort();
-
-  for (key = 0; key < a.length; key++) {
-    sorted[a[key]] = o[a[key]];
+  str.sort();
+  for (key = 0; key < str.length; key++) {
+    sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, "+");
   }
   return sorted;
 }

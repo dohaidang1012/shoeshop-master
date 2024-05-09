@@ -5,6 +5,8 @@ import { PayPalButton } from "react-paypal-button-v2";
 import { createOrder, payOrder } from "../../actions/OrderAction";
 import { useHistory } from "react-router-dom";
 import VnPay from "./VnPay";
+import PayPalCheckout from "./Paypal";
+import Paypal from "./Paypal";
 
 export default function Payment() {
   const history = useHistory();
@@ -16,7 +18,6 @@ export default function Payment() {
   });
 
   const { order } = useSelector((state) => state.orderInfo);
-
 
   const payLater = () => {
     setChoosePay({ payOnline: false, payLater: true });
@@ -62,9 +63,10 @@ export default function Payment() {
       };
       document.body.appendChild(script);
 
-      addPayPalScript();
+      // addPayPalScript();
     };
   }, []);
+  
   return (
     <div className="choose-pay">
       <h4>CHỌN PHƯƠNG THỨC THANH TOÁN </h4>
@@ -92,20 +94,21 @@ export default function Payment() {
         ""
       )}
       {choosePay.payOnline ? (
-        <button type="submit" className="paypal">
-          
-          <VnPay></VnPay>
-          <PayPalButton
-            className="paypal-btn"
-            style={{ color: "white", marginTop: '1rem' }}
-            amount={1}
-            onSuccess={successPaymentHandler}
-          ></PayPalButton>
-        </button>
+        <div>
+          <button type="submit" className="paypal">
+            <VnPay></VnPay>
+            {/* <Paypal /> */}
+            <PayPalButton
+              className="paypal-btn"
+              style={{ color: "white", marginTop: '1rem' }}
+              amount={1}
+              onSuccess={successPaymentHandler}
+            ></PayPalButton>
+          </button>
+        </div>
       ) : (
         ""
       )}
-
     </div>
   );
 }

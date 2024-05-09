@@ -8,6 +8,7 @@ import {
 } from "../../../../actions/ProductAction";
 import { useHistory, useParams } from "react-router-dom";
 import { getAllSelectList } from "../../../../actions/SelectListAction";
+import { Select } from "antd";
 
 function AdminUpdate(props) {
   const { register, handleSubmit } = useForm();
@@ -19,6 +20,8 @@ function AdminUpdate(props) {
   const detailProduct = useSelector((state) => state.getProductById.product);
   const SelectList = useSelector((state) => state.selectList.List);
   const [activeTypeProduct, setActiveTypeproduct] = useState(undefined);
+  const [colorList, setColorList] = useState([])
+  const [sizeList, setSizeList] = useState([])
   const { List } = useSelector((state) => state.allTypeProduct);
 
   useEffect(() => {
@@ -43,7 +46,6 @@ function AdminUpdate(props) {
 
   const onSubmit = async (data) => {
     let formData = new FormData();
-
     formData.append("name", data.name);
     formData.append("price", data.price);
     formData.append("amount", data.amount);
@@ -54,15 +56,21 @@ function AdminUpdate(props) {
     );
     formData.append("image", image);
     formData.append("_id", id);
+    colorList.forEach(color => {
+      formData.append("colors", color);
+    })
+    sizeList.forEach(size => {
+      formData.append("sizes", size);
+    })
 
-    formData.append("os", data.os);
-    formData.append("ram", data.ram);
-    formData.append("battery", data.battery);
-    formData.append("rom", data.rom);
-    formData.append("camera", data.camera);
-    formData.append("special", data.special);
-    formData.append("design", data.design);
-    formData.append("screen", data.screen);
+    // formData.append("os", data.os);
+    // formData.append("ram", data.ram);
+    // formData.append("battery", data.battery);
+    // formData.append("rom", data.rom);
+    // formData.append("camera", data.camera);
+    // formData.append("special", data.special);
+    // formData.append("design", data.design);
+    // formData.append("screen", data.screen);
 
     await dispatch(saveProduct(formData));
     history.push("/admin/product");
@@ -88,7 +96,12 @@ function AdminUpdate(props) {
   const HandleFilterProductByType = (name) => {
     setActiveTypeproduct(name);
   };
-
+  const handleChangeSize = (value) => {
+    setSizeList(value)
+  };
+  const handleChangeColor = (value) => {
+    setColorList(value)
+  };
   return (
     <div className="admin-create">
       <span>Update Product</span>
@@ -121,7 +134,22 @@ function AdminUpdate(props) {
             type="number"
             defaultValue={detailProduct.salePrice}
           ></input>
-
+          <Select placeholder="Select color"
+              mode="multiple"
+              size={'middle'}
+              onChange={handleChangeColor}
+              style={{ width: 200 }}
+              options={colors}
+            />
+            <br />
+            <Select placeholder="Select color"
+              mode="multiple"
+              size={'middle'}
+              onChange={handleChangeSize}
+              style={{ width: 200 }}
+              options={sizes}
+            />
+            <br />
           <div className="filter-menu-firm">
           {
             List ? (List.map((item) => MenuFirmProduct(item))) : ''
@@ -158,3 +186,28 @@ function AdminUpdate(props) {
 }
 
 export default AdminUpdate;
+const colors = [
+  { value: 'red', label: 'Red' },
+  { value: 'blue', label: 'Blue' },
+  { value: 'green', label: 'Green' },
+  { value: 'yellow', label: 'Yellow' },
+  { value: 'orange', label: 'Orange' },
+  { value: 'purple', label: 'Purple' },
+  { value: 'pink', label: 'Pink' },
+  { value: 'brown', label: 'Brown' },
+  { value: 'black', label: 'Black' },
+  { value: 'white', label: 'White' }
+];
+
+const sizes = [
+  { value: '30', label: '30' },
+  { value: '31', label: '31' },
+  { value: '32', label: '32' },
+  { value: '33', label: '33' },
+  { value: '34', label: '34' },
+  { value: '35', label: '35' },
+  { value: '36', label: '36' },
+  { value: '37', label: '37' },
+  { value: '38', label: '38' },
+  { value: '39', label: '39' }
+];

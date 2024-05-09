@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrderByUser } from "../../../../actions/OrderAction";
 import {formatPrice} from '../../../../untils/index'
 import "./AllOrder.css";
+import moment from "moment";
 
 const orderItem = (item) => (
   <div className="all-myorder-item">
@@ -12,6 +13,8 @@ const orderItem = (item) => (
     <div className="all-myorder-item-name">
       <p>{item.name}</p>
       <span>x{item.qty}</span>
+      <p>Màu: {item.color}</p>
+      <p>Cỡ: {item.size}</p>
     </div>
     <div className="all-myorder-item-price">{formatPrice(item.salePrice)}</div>
   </div>
@@ -24,6 +27,7 @@ export const orderParent = (item) => (
     </div>
     <div className="all-myorder-item-totalprice">
       <div>
+        <p>Đặt vào: {moment(item?.createdAt).format('YYYY-MM-DD hh:mm:ss')}</p>
         <span>Tổng số tiền : </span> <strong>{formatPrice(item.totalPrice)}đ</strong>
       </div>
     </div>
@@ -38,7 +42,7 @@ function AllOrder(props) {
   useEffect(() => {
     dispatch(getOrderByUser(userInfo._id));
   }, []);
-
+  console.log(myOrders)
   return (
     <div className="all-myorder">
       {myOrders && myOrders.length > 0 ? myOrders.map((item) => orderParent(item)) : "Bạn không có đơn hàng nào"}
