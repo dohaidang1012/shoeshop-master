@@ -9,6 +9,8 @@ import {
   ShopOutlined,
   OrderedListOutlined,
   WechatOutlined,
+  LogoutOutlined,
+  DiffOutlined,
 } from "@ant-design/icons";
 
 function Sidebar(props) {
@@ -52,6 +54,12 @@ function Sidebar(props) {
           </span>
           <p>Products</p>
         </Link>
+        <Link to="/admin/category" className={'sidebar-list-item'}>
+          <span>
+            <DiffOutlined />
+          </span>
+          <p>Category</p>
+        </Link>
         <Link to="/admin/order" className={'sidebar-list-item'}>
           <span>
             <OrderedListOutlined></OrderedListOutlined>
@@ -69,6 +77,12 @@ function Sidebar(props) {
           </span>
           <p>Chat</p>
         </Link> */}
+          <a href="/" className="sidebar-list-item">
+          <span>
+            <LogoutOutlined />
+          </span>
+          <p>Homepage</p>
+        </a>
       </div>
     </div>
   );

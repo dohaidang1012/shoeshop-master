@@ -9,13 +9,24 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
   if (req.body.orderItems.length === 0) {
     res.status(400).send({ message: "cart is emty" });
   } else {
+    const orderItems = req.body.orderItems.map(item => {
+      return {
+        name: item.name,
+        qty: item.qty,
+        image: item.image,
+        salePrice: item.salePrice,
+        product: item,
+        color: item.colorSelected,
+        size: item.sizeSelected
+      }
+    })
     const order = new OrderModel({
       order_code: "",
       to_ward_code: req.body.to_ward_code,
       to_district_id: req.body.to_district_id,
       cancelOrder: false,
 
-      orderItems: req.body.orderItems,
+      orderItems: orderItems,
       shippingAddress: {
         province: req.body.shippingAddress.province,
         district: req.body.shippingAddress.district,
@@ -40,7 +51,7 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
     });
 
     const createOrder = await order.save();
-    res.status(201).send({ message: "new order created", order: createOrder });
+    res.status(201).send({ message: "new order created", order: createOrder, code: '00' });
   }
 });
 

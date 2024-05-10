@@ -26,7 +26,10 @@ function ListProduct(props) {
           <th>Image</th>
           <th>Name</th>
           <th>Price</th>
-          {/* <th>Type</th> */}
+          <th>Type</th>
+          <th>Colors</th>
+          <th>Sizes</th>
+          <th>Actions</th>
         </tr>
         {listProducts
           ? listProducts.map((item, index) => (

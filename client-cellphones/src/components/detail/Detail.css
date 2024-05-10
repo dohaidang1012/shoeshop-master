@@ -68,7 +68,7 @@
     color: #444;
 }
 
-.detail-info-right-buy-now a {
+.detail-info-right-buy-now div {
     background: linear-gradient(#f52f32, #e11b1e);
     border: solid 1px #e11b1e;
     margin-top: 10px;

@@ -110,11 +110,11 @@ p{
 .buy{
     margin-top: 20px;
 }
-.buy a:hover{
+.buy p:hover{
     color: #fff;
     background-color: #8c9ba0;
 }
-.buy a{
+.buy p{
     padding: 7px 17px;
     background: #636e72;
     color: white;

@@ -9,7 +9,7 @@ function AdminOrder(props) {
 
   return (
     <Router>
-      <div className="order">
+      <div className="order" style={{display: "flex", flexDirection: 'column'}}>
         <span>Orders</span>
         <AdminOrderMenu></AdminOrderMenu>
 

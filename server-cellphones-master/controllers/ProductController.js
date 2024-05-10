@@ -59,6 +59,8 @@ export const AddProduct = expressAsyncHandler(async (req, res) => {
     image: result.secure_url,
     cloudinary_id: result.public_id,
     rating: 0,
+    colors: req.body.colors,
+    sizes: req.body.sizes,
 
     os: req.body.os,
     ram: req.body.ram,
@@ -82,13 +84,11 @@ export const AddProduct = expressAsyncHandler(async (req, res) => {
 
 export const UpdateProduct = expressAsyncHandler(async (req, res) => {
   const product = await ProductModel.findById(req.body._id);
-
-  await cloudinary.uploader.destroy(product.cloudinary_id);
-
   let result;
   if (req.file) {
+    await cloudinary.uploader.destroy(product.cloudinary_id);
     result = await cloudinary.uploader.upload(req.file.path);
-  }
+  } 
 
   if (product) {
     product.name = req.body.name;
@@ -99,6 +99,8 @@ export const UpdateProduct = expressAsyncHandler(async (req, res) => {
     product.image = result?.secure_url || product.image;
     product.rating = 0;
     product.cloulinary_id = result?.public_id || product.cloudinary_id;
+    product.colors = req.body.colors
+    product.sizes = req.body.sizes
 
     product.os = req.body.os;
     product.ram = req.body.ram;

@@ -69,8 +69,11 @@ function Order(props) {
       name: userInfo.name,
       user: userInfo,
     };
-
-    await dispatch(OrderInfo(Order));
+    try {
+      await dispatch(OrderInfo(Order));
+    } catch (error) {
+      
+    }
   };
 
   useEffect(() => {

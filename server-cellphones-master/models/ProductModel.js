@@ -36,22 +36,28 @@ const Product = new Schema(
     image: { type: String },
     amount: Number,
     cloudinary_id: { type: String },
-
     rating: { type: Number },
     numReviews: { type: Number },
     blog: String,
 
     reviews: [reviewProduct],
     comments: [commentProduct],
+    typeProduct: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'ListTypeProduct'
+    }],
 
-    os: String,
-    ram: String,
-    battery: String,
-    rom: String,
-    camera: String,
-    special: String,
-    design: String,
-    screen: String,
+    colors: [{ type: String }],
+    sizes: [{ type: String }],
+
+    // os: String,
+    // ram: String,
+    // battery: String,
+    // rom: String,
+    // camera: String,
+    // special: String,
+    // design: String,
+    // screen: String,
   },
   {
     timestamps: true,

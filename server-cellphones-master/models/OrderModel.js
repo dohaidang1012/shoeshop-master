@@ -16,7 +16,9 @@ const orderSchema = new mongoose.Schema({
         product: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product'
-        }
+        },
+        color: { type: String, required: true},
+        size: { type: String, required: true},
     }],
     shippingAddress: {
         province: {type: String},

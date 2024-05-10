@@ -18,7 +18,7 @@ function Cart(props) {
     if (userInfo) {
       history.push("/order");
     } else {
-      alert("ban can dang nhap");
+      alert("Ban can dang nhap");
       history.push("/login");
     }
   };
@@ -44,7 +44,7 @@ function Cart(props) {
               {/* <BsChevronDoubleLeft></BsChevronDoubleLeft> */}
               Tiếp tục mua hàng
             </Link>
-            <Link onClick={() => Order()}> Đặt Hàng </Link>
+            <Link onClick={Order}> Đặt Hàng </Link>
           </div>
         )}
       </div>

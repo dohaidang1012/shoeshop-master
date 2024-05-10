@@ -27,6 +27,9 @@ function Product(props) {
       <td>{product.name}</td>
       <td>{formatPrice(product.salePrice)}</td>
       <td>{product.type}</td>
+      <td>{product.colors.join(', ')}</td>
+      <td>{(product.sizes).join(', ')}</td>
+
       <td
         className="delete-product"
         onClick={(e) => handleDeleteProduct(product)}

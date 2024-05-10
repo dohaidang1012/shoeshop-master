@@ -40,7 +40,6 @@ function Login(props) {
           type="password"
           required
         ></input>
-
         <input type="submit" value="Đăng Nhập"></input>
         {error ? <h2>{error}</h2> : <></>}
         <Link to="/register">Tạo tài khoản?</Link>
