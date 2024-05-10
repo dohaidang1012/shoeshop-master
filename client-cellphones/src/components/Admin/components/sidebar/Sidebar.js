@@ -77,12 +77,12 @@ function Sidebar(props) {
           </span>
           <p>Chat</p>
         </Link> */}
-          <Link to="" className="sidebar-list-item">
+          <a href="/" className="sidebar-list-item">
           <span>
             <LogoutOutlined />
           </span>
           <p>Homepage</p>
-        </Link>
+        </a>
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ import Category from './AdminProduct/ListCategory';
 import AdminCategory from './AdminProduct/AdminCategory';
 import AdminCreateCategory from './AdminProduct/AdminCreateCategory';
 import AdminUpdateCategory from './AdminProduct/AdminUpdateCategory';
+import HomePage from 'pages/HomePage';
 
 function Routes(props) {
     return (

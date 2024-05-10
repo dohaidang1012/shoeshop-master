@@ -19,9 +19,12 @@ export default function VnPay() {
 
     if (data.code === "00") {
       document.location = data.data;
+      localStorage.removeItem("cartItems");
+    } else {
+      alert('Thanh toán không thành công!')
     }
 
-    localStorage.removeItem("cartItems");
+    
   };
 
   return (

@@ -25,6 +25,13 @@ function AdminUpdate(props) {
   const { List } = useSelector((state) => state.allTypeProduct);
 
   useEffect(() => {
+    setColorList(detailProduct?.colors)
+    setSizeList(detailProduct?.sizes)
+    return () => {
+    }
+  }, [detailProduct])
+  
+  useEffect(() => {
     dispatch(getproductById(id));
 
     return () => {
@@ -56,10 +63,10 @@ function AdminUpdate(props) {
     );
     formData.append("image", image);
     formData.append("_id", id);
-    colorList.forEach(color => {
+    colorList?.forEach(color => {
       formData.append("colors", color);
     })
-    sizeList.forEach(size => {
+    sizeList?.forEach(size => {
       formData.append("sizes", size);
     })
 
@@ -138,15 +145,15 @@ function AdminUpdate(props) {
               mode="multiple"
               size={'middle'}
               onChange={handleChangeColor}
-              style={{ width: 200 }}
-              options={colors}
+              style={{ width: 200 }} value={colorList}
+              options={colors} defaultValue={detailProduct.colors}
             />
             <br />
             <Select placeholder="Select color"
-              mode="multiple"
+              mode="multiple" value={sizeList}
               size={'middle'}
               onChange={handleChangeSize}
-              style={{ width: 200 }}
+              style={{ width: 200 }} defaultValue={detailProduct.sizes}
               options={sizes}
             />
             <br />

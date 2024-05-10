@@ -5,7 +5,7 @@ import { SignoutUser } from "../../actions/UserAction";
 import { useHistory } from "react-router";
 import { searchProduct } from "../../actions/ProductAction";
 import { Link } from "react-router-dom";
-
+import { Dropdown, Space } from 'antd';
 import {
   DownOutlined,
   ShoppingCartOutlined,
@@ -37,7 +37,20 @@ function Header(props) {
     dispatch(searchProduct(search));
     setSearch("");
   };
-
+  const items = [
+    {
+      label: userInfo?.isAdmin ? <Link to="/admin" ><p className="menu-link" >Admin</p></Link> : "" ,
+      key: '0',
+    },
+    {
+      label:  <Link to="/myOrder" ><p className="menu-link">Đơn hàng </p></Link>,
+      key: '1',
+    },
+    {
+      label: <Link onClick={() => handleSignout()} ><p className="menu-link">Đăng xuất </p></Link>,
+      key: '3',
+    },
+  ];
   return (
     <div className="header">
       <section id="menu">
@@ -50,7 +63,7 @@ function Header(props) {
           <li className="active">
             <Link to="/"> Trang Chủ </Link>
           </li>
-          <li className="active">
+          {/* <li className="active">
             <Link to="/product"> Men </Link>
           </li>
           <li className="active">
@@ -58,12 +71,18 @@ function Header(props) {
           </li>
           <li className="active">
             <Link to="/product"> Kids </Link>
-          </li>
-          <li className="active">
+          </li> */}
+          {/* <li className="active">
             <Link to="/product"> Sale </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/product"> Sản Phẩm </Link>
+          </li>
+          <li className="active">
+            <Link to="/about-us"> About us </Link>
+          </li>
+          <li className="active">
+            <Link to="/contact"> Contact</Link>
           </li>
         </ul>
         <div className="header-right">
@@ -79,25 +98,25 @@ function Header(props) {
               <SearchOutlined
                 onClick={(e) => SearchProduct(e)}
               ></SearchOutlined>
+
               {/* <button type="submit" onClick={(e) => SearchProduct(e)}>Search</button> */}
             </form>
           </div>
+
           {userInfo ? (
-            <li onClick={() => setShowAccount2(!showAccount2)}>
-              <Link>
+            <Dropdown
+              menu={{
+                items,
+              }}
+              trigger={['click']}
+            >
+              <Link onClick={(e) => e.preventDefault()} style={{color: 'black', padding: '4px 0'}}>
+                <Space>
                 {userInfo.name}
-                <DownOutlined style={{ fontSize: "14px" }} />
+                  <DownOutlined />
+                </Space>
               </Link>
-              {showAccount2 ? (
-                <div className="menu-drop">
-                  <p className="menu-link">{userInfo.isAdmin ? <Link to="/admin" >Admin</Link> : ""  }</p> 
-                  <p className="menu-link"><Link to="/myOrder" >Đơn hàng</Link></p>
-                  <p className="menu-link"><Link onClick={() => handleSignout()} >Đăng xuất</Link></p>
-                </div>
-              ) : (
-                ""
-              )}
-            </li>
+            </Dropdown>
           ) : (
             <li onClick={() => setShowAccount(!showAccount)}>
               <Link>

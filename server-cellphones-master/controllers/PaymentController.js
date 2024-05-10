@@ -118,9 +118,13 @@ export const returnPayment = expressAsyncHandler(async (req, res) => {
     delete vnp_Params.vnp_SecureHashType;
 
     vnp_Params = sortObject(vnp_Params);
-    const signData =
-      secretKey + querystring.stringify(vnp_Params, { encode: false });
+    // const signData =
+    //   secretKey + querystring.stringify(vnp_Params, { encode: false });
 
+      // 
+      var signData = querystring.stringify(vnp_Params, { encode: false });
+      var hmac = crypto.createHmac("sha512", secretKey);
+      var signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");  
     // new code
     // var signData = querystring.stringify(vnp_Params, { encode: false });
     // var hmac = crypto.createHmac("sha512", secretKey);
@@ -132,7 +136,7 @@ export const returnPayment = expressAsyncHandler(async (req, res) => {
     const id = vnp_Params.vnp_TxnRef;
 
     // res.status(200).json({ code: vnp_Params.vnp_ResponseCode });
-    if (secureHash === checkSum) {
+    if (secureHash === signed) {
       console.log('if 1')
       if (vnp_Params.vnp_ResponseCode == "00") {
         console.log('if 2')

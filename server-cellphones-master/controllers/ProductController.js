@@ -59,6 +59,8 @@ export const AddProduct = expressAsyncHandler(async (req, res) => {
     image: result.secure_url,
     cloudinary_id: result.public_id,
     rating: 0,
+    colors: req.body.colors,
+    sizes: req.body.sizes,
 
     os: req.body.os,
     ram: req.body.ram,

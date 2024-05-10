@@ -28,14 +28,18 @@ export default function Payment() {
   };
 
   const successPaymentHandler = async (paymentResult) => {
-    const OrderPaid = {
-      ...order,
-      status: "pendding",
-      paymentMethod: "payOnline",
-      paymentResult: {...paymentResult},
-    };
-    await dispatch(createOrder(OrderPaid));
-    history.push("/orderSuccess");
+    try {
+      const OrderPaid = {
+        ...order,
+        status: "pendding",
+        paymentMethod: "payOnline",
+        paymentResult: {...paymentResult},
+      };
+      await dispatch(createOrder(OrderPaid));
+      history.push("/orderSuccess?00");
+    } catch (error) {
+      
+    }
   };
 
   const SendOrderPayLater = async () => {
@@ -66,7 +70,7 @@ export default function Payment() {
       // addPayPalScript();
     };
   }, []);
-  
+  console.log(order)
   return (
     <div className="choose-pay">
       <h4>CHỌN PHƯƠNG THỨC THANH TOÁN </h4>
@@ -98,10 +102,10 @@ export default function Payment() {
           <button type="submit" className="paypal">
             <VnPay></VnPay>
             {/* <Paypal /> */}
-            <PayPalButton
+            <PayPalButton 
               className="paypal-btn"
               style={{ color: "white", marginTop: '1rem' }}
-              amount={1}
+              amount={(order?.totalPrice / 23000).toFixed(2)}
               onSuccess={successPaymentHandler}
             ></PayPalButton>
           </button>
