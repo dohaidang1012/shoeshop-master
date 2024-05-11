@@ -26,6 +26,7 @@ function Product(props) {
       </td>
       <td>{product.name}</td>
       <td>{formatPrice(product.salePrice)}</td>
+      <td>{product.brand}</td>
       <td>{product.type}</td>
       <td>{product.colors.join(', ')}</td>
       <td>{(product.sizes).join(', ')}</td>

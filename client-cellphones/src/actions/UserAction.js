@@ -50,3 +50,12 @@ export const deleteUser = (userId) => async (dispatch, getState) => {
     dispatch({type: 'DELETE_USER_FAIL', error: error.message})
   }
 }
+
+export const dailyVisitsUser = (userId) => async(dispatch) => {
+  try {
+    const {data} = await axios.put(`http://localhost:4000/dailyVisit/${userId}`)
+    dispatch({type: 'VISIT_PAGE'})
+  } catch (error) {
+
+  }
+}

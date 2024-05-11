@@ -8,7 +8,13 @@ const User = new Schema({
     password: {type: String, required: true},
     address: {type:String},
     phone: {type: String},
-    isAdmin: {type: Boolean}
+    isAdmin: {type: Boolean},
+    dailyVisits: [
+      {
+        view: {type: Number, default: 0},
+        day:  {type: Date}
+      }
+    ]
 },
 {
     timestamps: true,

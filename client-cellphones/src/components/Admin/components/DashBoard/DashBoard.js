@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BellOutlined,
   SearchOutlined,
@@ -9,8 +9,43 @@ import {
 } from "@ant-design/icons";
 import "./DashBoard.css";
 import ChartDashBoard from "./ChartDashBoard";
+import { useSelector } from "react-redux";
+import { axiosClient } from "services/config.services";
 
 export default function DashBoard() {
+  const orders = useSelector((state) => state.allOrder.order);
+  const [analytic, setAnalytic] = useState()
+
+  const getVisitDaily = async() => {
+    const data = await axiosClient.get('http://localhost:4000/user/dailyVisit')
+    setAnalytic(pre => ({...pre, visitDaily:data.data}))
+  }
+  useEffect(() => {
+    const ordersSuccess = orders?.filter(item => item.status == 'paid') 
+    if(ordersSuccess) {
+      const totalSales = ordersSuccess.reduce((total, currentValue) => {
+        return total + currentValue.orderItems.reduce((totalItem, currentQuantity) => {
+            return totalItem + +currentQuantity.qty
+          }, 0
+        )
+      }, 0)
+      const totalOrder = ordersSuccess.length
+      const totalIncome = ordersSuccess.reduce((total, currentValue) => {
+        return total + currentValue.totalPrice
+      }, 0)
+      getVisitDaily()
+      setAnalytic({
+        totalIncome,
+        totalSales,
+        totalOrder
+      })
+    }
+    return () => {
+      
+    }
+  }, [])
+  
+
   return (
     <section id="dashboard">
       <div className="dashboard">
@@ -42,7 +77,7 @@ export default function DashBoard() {
                   <ShoppingOutlined></ShoppingOutlined>
                 </div>
                 <div className="dashboard-middle-statistic-title">
-                  <span className="total">1666</span>
+                  <span className="total">{analytic?.totalSales}</span>
                   <span className="title">Total Sales</span>
                 </div>
               </li>
@@ -53,7 +88,7 @@ export default function DashBoard() {
                   <ShoppingCartOutlined></ShoppingCartOutlined>
                 </div>
                 <div className="dashboard-middle-statistic-title">
-                  <span className="total">25</span>
+                  <span className="total">{analytic?.visitDaily}</span>
                   <span className="title">Daily Visits</span>
                 </div>
               </li>
@@ -64,7 +99,7 @@ export default function DashBoard() {
                   <DollarCircleOutlined></DollarCircleOutlined>
                 </div>
                 <div className="dashboard-middle-statistic-title">
-                  <span className="total">2000</span>
+                  <span className="total">{analytic?.totalIncome}</span>
                   <span className="title">Total Income</span>
                 </div>
               </li>
@@ -75,7 +110,7 @@ export default function DashBoard() {
                   <FileTextOutlined></FileTextOutlined>
                 </div>
                 <div className="dashboard-middle-statistic-title">
-                  <span className="total">1208</span>
+                  <span className="total">{analytic?.totalOrder}</span>
                   <span className="title">Total Orders</span>
                 </div>
               </li>

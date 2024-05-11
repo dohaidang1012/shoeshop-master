@@ -55,12 +55,13 @@ export const AddProduct = expressAsyncHandler(async (req, res) => {
     price: req.body.price,
     salePrice: req.body.salePrice,
     amount: req.body.amount,
-    type: req.body.type || "nike",
+    type: req.body.type,
     image: result.secure_url,
     cloudinary_id: result.public_id,
     rating: 0,
     colors: req.body.colors,
     sizes: req.body.sizes,
+    brand: req.body.brand || "nike",
 
     os: req.body.os,
     ram: req.body.ram,
@@ -101,6 +102,7 @@ export const UpdateProduct = expressAsyncHandler(async (req, res) => {
     product.cloulinary_id = result?.public_id || product.cloudinary_id;
     product.colors = req.body.colors
     product.sizes = req.body.sizes
+    product.brand= req.body.brand || "nike",
 
     product.os = req.body.os;
     product.ram = req.body.ram;

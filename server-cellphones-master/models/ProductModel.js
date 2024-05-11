@@ -42,10 +42,7 @@ const Product = new Schema(
 
     reviews: [reviewProduct],
     comments: [commentProduct],
-    typeProduct: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'ListTypeProduct'
-    }],
+    brand: {type: String},
 
     colors: [{ type: String }],
     sizes: [{ type: String }],
