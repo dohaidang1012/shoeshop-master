@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./Header.css";
 import { SignoutUser } from "../../actions/UserAction";
@@ -11,6 +11,8 @@ import {
   ShoppingCartOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
+import axios from "axios";
+import { axiosClient } from "services/config.services";
 
 function Header(props) {
   const dispatch = useDispatch();
@@ -25,6 +27,7 @@ function Header(props) {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const amount = cartItems.reduce((a, b) => a + b.qty, 0);
 
+  
   const [menu, setMenu] = useState(true);
 
   const handleSignout = () => {
@@ -153,4 +156,4 @@ function Header(props) {
   );
 }
 
-export default Header;
+export default memo(Header);

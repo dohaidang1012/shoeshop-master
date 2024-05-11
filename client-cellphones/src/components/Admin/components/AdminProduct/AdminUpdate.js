@@ -57,6 +57,12 @@ function AdminUpdate(props) {
     formData.append("price", data.price);
     formData.append("amount", data.amount);
     formData.append("salePrice", data.salePrice);
+    formData.append("brand", data.brand);
+    <input required
+      {...register("brand")}
+      placeholder="Brand"
+      type="string"
+    ></input>
     formData.append(
       "type",
       activeTypeProduct ? activeTypeProduct : detailProduct.type
@@ -113,33 +119,38 @@ function AdminUpdate(props) {
     <div className="admin-create">
       <span>Update Product</span>
       {detailProduct ? (
-        <form
+        <form 
           className="admin-create-product"
           onSubmit={handleSubmit(onSubmit)}
           encType="multipart/form-data"
         >
-          <input
+          <input required
             {...register("name")}
             placeholder="Name"
             defaultValue={detailProduct.name}
           ></input>
-          <input
+          <input required
             {...register("amount")}
             placeholder="Amount"
             type="number"
             defaultValue={detailProduct.amount}
           ></input>
-          <input
+          <input required
             {...register("price")}
             placeholder="Price"
             type="number"
             defaultValue={detailProduct.price}
           ></input>
-          <input
+          <input required
             {...register("salePrice")}
             placeholder="SalePrice"
             type="number"
             defaultValue={detailProduct.salePrice}
+          ></input>
+          <input required defaultValue={detailProduct.brand}
+          {...register("brand")}
+          placeholder="Brand"
+          type="string"
           ></input>
           <Select placeholder="Select color"
               mode="multiple"

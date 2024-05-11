@@ -23,7 +23,6 @@ function AdminCreate(props) {
   const { List } = useSelector((state) => state.allTypeProduct);
   const [colorList, setColorList] = useState([])
   const [sizeList, setSizeList] = useState([])
-
   useEffect(() => {
     dispatch(getAllSelectList());
   }, [dispatch]);
@@ -38,11 +37,15 @@ function AdminCreate(props) {
 
   const onSubmit = async (data) => {
     let formData = new FormData();
-
+    if(!activeTypeProduct || !image) {
+      alert('Chưa có hình ảnh và loại giày')
+      return 
+    }
     formData.append("name", data.name);
     formData.append("price", data.price);
     formData.append("amount", data.amount);
     formData.append("salePrice", data.salePrice);
+    formData.append("brand", data.brand);
     formData.append("type", activeTypeProduct);
     formData.append("image", image);
 
@@ -95,19 +98,24 @@ function AdminCreate(props) {
         onSubmit={handleSubmit(onSubmit)}
         encType="multipart/form-data"
       >
-        <input {...register("name")} placeholder="Name"></input>
-        <input
+        <input required {...register("name")} placeholder="Name"></input>
+        <input required
           {...register("amount")}
           placeholder="Amount"
           type="number"
         ></input>
-        <input {...register("price")} placeholder="Price" type="number"></input>
-        <input
+        <input required {...register("price")} placeholder="Price" type="number"></input>
+        <input required
           {...register("salePrice")}
           placeholder="SalePrice"
           type="number"
         ></input>
-         <Select placeholder="Select color"
+        <input required
+          {...register("brand")}
+          placeholder="Brand"
+          type="string"
+        ></input>
+         <Select placeholder="Select color" 
             mode="multiple"
             size={'middle'}
             onChange={handleChangeColor}

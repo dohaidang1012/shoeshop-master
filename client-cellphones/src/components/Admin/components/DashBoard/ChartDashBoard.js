@@ -11,9 +11,11 @@ export default function ChartDashBoard() {
   const numberOfOrdersOnMonth = (month) => {
     if(allOrder){
       return allOrder.filter((order) => {
-        const allOrder = new Date(order.createdAt).getMonth();
-        if (allOrder + 1 === month) {
-          return order;
+        if(order.status == 'paid') {
+          const allOrder = new Date(order.createdAt).getMonth();
+          if (allOrder + 1 === month) {
+            return order;
+          }
         }
       }).length;
     }
@@ -28,18 +30,18 @@ export default function ChartDashBoard() {
     series: [{
         name: 'Monthly bill',
         data: [
-          numberOfOrdersOnMonth(1) + 7,
-          numberOfOrdersOnMonth(2) + 4,
-          numberOfOrdersOnMonth(3) + 7,
-          numberOfOrdersOnMonth(4)+ 5,
-          numberOfOrdersOnMonth(5)+ 3,
-          numberOfOrdersOnMonth(6)+ 14,
+          numberOfOrdersOnMonth(1) ,
+          numberOfOrdersOnMonth(2) ,
+          numberOfOrdersOnMonth(3) ,
+          numberOfOrdersOnMonth(4),
+          numberOfOrdersOnMonth(5),
+          numberOfOrdersOnMonth(6),
           numberOfOrdersOnMonth(7),
-          numberOfOrdersOnMonth(8)+ 8,
-          numberOfOrdersOnMonth(9)+ 8,
-          numberOfOrdersOnMonth(10)+ 18,
-          numberOfOrdersOnMonth(11) + 20,
-          numberOfOrdersOnMonth(12) + 11,
+          numberOfOrdersOnMonth(8),
+          numberOfOrdersOnMonth(9),
+          numberOfOrdersOnMonth(10),
+          numberOfOrdersOnMonth(11) ,
+          numberOfOrdersOnMonth(12) ,
         ]
     }],
     options: {

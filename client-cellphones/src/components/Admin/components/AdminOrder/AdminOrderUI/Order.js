@@ -4,7 +4,7 @@ import {
   createOrderGhn,
   PrintOrderGhn,
 } from "../../../../../actions/GhnAction";
-import { deleteOrder, getAllOrder, ShippingOrder } from "../../../../../actions/OrderAction";
+import { deleteOrder, getAllOrder, PaidOrder, ShippingOrder } from "../../../../../actions/OrderAction";
 import {
   formatPrice,
   formatDateOrderPaypal,
@@ -25,9 +25,11 @@ function Order(props) {
   } = order;
 
   const handleShippingOrder = async (order) => {
-    console.log('handleShippingOrder')
-    await dispatch(createOrderGhn(order._id)); // create order in giaohangnhanh
-    await dispatch(ShippingOrder(order._id));
+    // console.log('handleShippingOrder')
+    // await dispatch(createOrderGhn(order._id)); // create order in giaohangnhanh
+    // await dispatch(ShippingOrder(order._id));
+    console.log('handlePaidOrder')
+    await dispatch(PaidOrder(order._id));
 
     dispatch(getAllOrder());
   };

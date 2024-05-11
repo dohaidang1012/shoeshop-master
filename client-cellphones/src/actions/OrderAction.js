@@ -336,3 +336,4 @@ export const payOrder = (order, paymentResult) => async (dispatch, getState) => 
 export const OrderInfo = (orderInfo) => async (dispatch, getState) => {
   dispatch({ type: "ORDER_INFO", payload: orderInfo });
 };
+

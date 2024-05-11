@@ -14,8 +14,22 @@ import MyOrderPage from './pages/MyOrderPage';
 import ChatPage from './pages/ChatPage';
 import PaymentPage from './pages/PaymentPage';
 import OrderSuccessPage from './pages/OrderSuccessPage'
+import { useEffect } from 'react';
+import { axiosClient } from 'services/config.services';
+import { useSelector } from 'react-redux';
 
 function App() {
+  
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo, error } = userSignin;
+  useEffect(() => {
+    const handleVisited = async() => {
+      await axiosClient.put(`http://localhost:4000/user/dailyVisit/${userInfo._id}`)
+    }
+    handleVisited()
+    return () => {
+    }
+  }, [userInfo])
   return (
     <div className="App">
   
