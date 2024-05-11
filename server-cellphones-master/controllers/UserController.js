@@ -149,9 +149,12 @@ export const getVisitsByCurrentDate = expressAsyncHandler(async (req, res) => {
 export const changeRule = expressAsyncHandler(async (req, res) => {
     try {
         const user = await UserModel.findById({_id: req.params.id})
-        user.isAdmin = !user.isAdmin
-        await user.save()
-        res.send({message: 'updated rules'})
+        if(user.isAdmin) {
+            user.isAdmin = !user.isAdmin
+            await user.save()
+            res.send({message: 'updated rules'})
+        } 
+        res.send({message: 'Require rule admin'})
     } catch (error) {
         res.send({message: 'user not exists'})
     }
