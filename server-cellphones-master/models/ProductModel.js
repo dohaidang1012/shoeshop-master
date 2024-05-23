@@ -1,31 +1,34 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const reviewProduct = new Schema({
-  name: {type: String},
-  comment: {type: String},
-  star: {type: Number},
-},{
-  timestamps: true,
-})
+const reviewProduct = new Schema(
+  {
+    name: { type: String },
+    comment: { type: String },
+    star: { type: Number },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const replieCommentProduct = new Schema({
-  content: {type: String},
+  content: { type: String },
   isAdmin: Boolean,
-  nameUser: {type: String},
-  byUser: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
-})
+  nameUser: { type: String },
+  byUser: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+});
 
 const commentProduct = new Schema({
-  author: {type: String},
+  author: { type: String },
   status: String,
   isAdmin: Boolean,
-  avatar: {type: String},
-  content: {type:String},
-  byUser: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  replies: [replieCommentProduct]
-})
+  avatar: { type: String },
+  content: { type: String },
+  byUser: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  replies: [replieCommentProduct],
+});
 
 const Product = new Schema(
   {
@@ -42,10 +45,10 @@ const Product = new Schema(
 
     reviews: [reviewProduct],
     comments: [commentProduct],
-    brand: {type: String},
+    brand: { type: String },
 
     colors: [{ type: String }],
-    sizes: [{ type: String }],
+    sizes: [{ type: Number }],
 
     // os: String,
     // ram: String,
@@ -60,6 +63,6 @@ const Product = new Schema(
     timestamps: true,
   }
 );
-Product.index({name: 'text'});
+Product.index({ name: "text" });
 
-export const ProductModel = mongoose.model("Product", Product)
+export const ProductModel = mongoose.model("Product", Product);

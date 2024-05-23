@@ -89,7 +89,7 @@ export const UpdateProduct = expressAsyncHandler(async (req, res) => {
   if (req.file) {
     await cloudinary.uploader.destroy(product.cloudinary_id);
     result = await cloudinary.uploader.upload(req.file.path);
-  } 
+  }
 
   if (product) {
     product.name = req.body.name;
@@ -100,11 +100,9 @@ export const UpdateProduct = expressAsyncHandler(async (req, res) => {
     product.image = result?.secure_url || product.image;
     product.rating = 0;
     product.cloulinary_id = result?.public_id || product.cloudinary_id;
-    product.colors = req.body.colors
-    product.sizes = req.body.sizes
-    product.brand= req.body.brand || "nike",
-
-    product.os = req.body.os;
+    product.colors = req.body.colors;
+    product.sizes = req.body.sizes;
+    (product.brand = req.body.brand || "nike"), (product.os = req.body.os);
     product.ram = req.body.ram;
     product.battery = req.body.battery;
     product.rom = req.body.rom;

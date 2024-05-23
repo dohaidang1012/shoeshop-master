@@ -5,7 +5,7 @@ import { SignoutUser } from "../../actions/UserAction";
 import { useHistory } from "react-router";
 import { searchProduct } from "../../actions/ProductAction";
 import { Link } from "react-router-dom";
-import { Dropdown, Space } from 'antd';
+import { Dropdown, Space } from "antd";
 import {
   DownOutlined,
   ShoppingCartOutlined,
@@ -27,7 +27,6 @@ function Header(props) {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const amount = cartItems.reduce((a, b) => a + b.qty, 0);
 
-  
   const [menu, setMenu] = useState(true);
 
   const handleSignout = () => {
@@ -42,16 +41,30 @@ function Header(props) {
   };
   const items = [
     {
-      label: userInfo?.isAdmin ? <Link to="/admin" ><p className="menu-link" >Admin</p></Link> : "" ,
-      key: '0',
+      label: userInfo?.isAdmin ? (
+        <Link to="/admin">
+          <p className="menu-link">Admin</p>
+        </Link>
+      ) : (
+        ""
+      ),
+      key: "0",
     },
     {
-      label:  <Link to="/myOrder" ><p className="menu-link">Đơn hàng </p></Link>,
-      key: '1',
+      label: (
+        <Link to="/myOrder">
+          <p className="menu-link">Đơn hàng </p>
+        </Link>
+      ),
+      key: "1",
     },
     {
-      label: <Link onClick={() => handleSignout()} ><p className="menu-link">Đăng xuất </p></Link>,
-      key: '3',
+      label: (
+        <Link onClick={() => handleSignout()}>
+          <p className="menu-link">Đăng xuất </p>
+        </Link>
+      ),
+      key: "3",
     },
   ];
   return (
@@ -66,18 +79,6 @@ function Header(props) {
           <li className="active">
             <Link to="/"> Trang Chủ </Link>
           </li>
-          {/* <li className="active">
-            <Link to="/product"> Men </Link>
-          </li>
-          <li className="active">
-            <Link to="/product"> Women </Link>
-          </li>
-          <li className="active">
-            <Link to="/product"> Kids </Link>
-          </li> */}
-          {/* <li className="active">
-            <Link to="/product"> Sale </Link>
-          </li> */}
           <li>
             <Link to="/product"> Sản Phẩm </Link>
           </li>
@@ -111,11 +112,14 @@ function Header(props) {
               menu={{
                 items,
               }}
-              trigger={['click']}
+              trigger={["click"]}
             >
-              <Link onClick={(e) => e.preventDefault()} style={{color: 'black', padding: '4px 0'}}>
+              <Link
+                onClick={(e) => e.preventDefault()}
+                style={{ color: "black", padding: "4px 0" }}
+              >
                 <Space>
-                {userInfo.name}
+                  {userInfo.name}
                   <DownOutlined />
                 </Space>
               </Link>

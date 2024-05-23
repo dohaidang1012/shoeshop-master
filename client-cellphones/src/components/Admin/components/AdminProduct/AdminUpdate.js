@@ -20,17 +20,16 @@ function AdminUpdate(props) {
   const detailProduct = useSelector((state) => state.getProductById.product);
   const SelectList = useSelector((state) => state.selectList.List);
   const [activeTypeProduct, setActiveTypeproduct] = useState(undefined);
-  const [colorList, setColorList] = useState([])
-  const [sizeList, setSizeList] = useState([])
+  const [colorList, setColorList] = useState([]);
+  const [sizeList, setSizeList] = useState([]);
   const { List } = useSelector((state) => state.allTypeProduct);
 
   useEffect(() => {
-    setColorList(detailProduct?.colors)
-    setSizeList(detailProduct?.sizes)
-    return () => {
-    }
-  }, [detailProduct])
-  
+    setColorList(detailProduct?.colors);
+    setSizeList(detailProduct?.sizes);
+    return () => {};
+  }, [detailProduct]);
+
   useEffect(() => {
     dispatch(getproductById(id));
 
@@ -58,23 +57,24 @@ function AdminUpdate(props) {
     formData.append("amount", data.amount);
     formData.append("salePrice", data.salePrice);
     formData.append("brand", data.brand);
-    <input required
+    <input
+      required
       {...register("brand")}
       placeholder="Brand"
       type="string"
-    ></input>
+    ></input>;
     formData.append(
       "type",
       activeTypeProduct ? activeTypeProduct : detailProduct.type
     );
     formData.append("image", image);
     formData.append("_id", id);
-    colorList?.forEach(color => {
+    colorList?.forEach((color) => {
       formData.append("colors", color);
-    })
-    sizeList?.forEach(size => {
+    });
+    sizeList?.forEach((size) => {
       formData.append("sizes", size);
-    })
+    });
 
     // formData.append("os", data.os);
     // formData.append("ram", data.ram);
@@ -110,68 +110,78 @@ function AdminUpdate(props) {
     setActiveTypeproduct(name);
   };
   const handleChangeSize = (value) => {
-    setSizeList(value)
+    setSizeList(value);
   };
   const handleChangeColor = (value) => {
-    setColorList(value)
+    setColorList(value);
   };
   return (
     <div className="admin-create">
       <span>Update Product</span>
       {detailProduct ? (
-        <form 
+        <form
           className="admin-create-product"
           onSubmit={handleSubmit(onSubmit)}
           encType="multipart/form-data"
         >
-          <input required
+          <input
+            required
             {...register("name")}
             placeholder="Name"
             defaultValue={detailProduct.name}
           ></input>
-          <input required
+          <input
+            required
             {...register("amount")}
             placeholder="Amount"
             type="number"
             defaultValue={detailProduct.amount}
           ></input>
-          <input required
+          <input
+            required
             {...register("price")}
             placeholder="Price"
             type="number"
             defaultValue={detailProduct.price}
           ></input>
-          <input required
+          <input
+            required
             {...register("salePrice")}
             placeholder="SalePrice"
             type="number"
             defaultValue={detailProduct.salePrice}
           ></input>
-          <input required defaultValue={detailProduct.brand}
-          {...register("brand")}
-          placeholder="Brand"
-          type="string"
+          <input
+            required
+            defaultValue={detailProduct.brand}
+            {...register("brand")}
+            placeholder="Brand"
+            type="string"
           ></input>
-          <Select placeholder="Select color"
-              mode="multiple"
-              size={'middle'}
-              onChange={handleChangeColor}
-              style={{ width: 200 }} value={colorList}
-              options={colors} defaultValue={detailProduct.colors}
-            />
-            <br />
-            <Select placeholder="Select color"
-              mode="multiple" value={sizeList}
-              size={'middle'}
-              onChange={handleChangeSize}
-              style={{ width: 200 }} defaultValue={detailProduct.sizes}
-              options={sizes}
-            />
-            <br />
+          <Select
+            placeholder="Select color"
+            mode="multiple"
+            size={"middle"}
+            onChange={handleChangeColor}
+            style={{ width: 200 }}
+            value={colorList}
+            options={colors}
+            defaultValue={detailProduct.colors}
+          />
+          <br />
+          <Select
+            placeholder="Select size"
+            mode="multiple"
+            value={sizeList}
+            size={"middle"}
+            onChange={handleChangeSize}
+            style={{ width: 200 }}
+            defaultValue={detailProduct.sizes}
+            options={sizes}
+          />
+          <br />
           <div className="filter-menu-firm">
-          {
-            List ? (List.map((item) => MenuFirmProduct(item))) : ''
-          }
+            {List ? List.map((item) => MenuFirmProduct(item)) : ""}
           </div>
 
           {SelectList && SelectList.length > 0
@@ -205,27 +215,31 @@ function AdminUpdate(props) {
 
 export default AdminUpdate;
 const colors = [
-  { value: 'red', label: 'Red' },
-  { value: 'blue', label: 'Blue' },
-  { value: 'green', label: 'Green' },
-  { value: 'yellow', label: 'Yellow' },
-  { value: 'orange', label: 'Orange' },
-  { value: 'purple', label: 'Purple' },
-  { value: 'pink', label: 'Pink' },
-  { value: 'brown', label: 'Brown' },
-  { value: 'black', label: 'Black' },
-  { value: 'white', label: 'White' }
+  { value: "red", label: "Red" },
+  { value: "blue", label: "Blue" },
+  { value: "green", label: "Green" },
+  { value: "yellow", label: "Yellow" },
+  { value: "orange", label: "Orange" },
+  { value: "purple", label: "Purple" },
+  { value: "pink", label: "Pink" },
+  { value: "brown", label: "Brown" },
+  { value: "black", label: "Black" },
+  { value: "white", label: "White" },
 ];
 
 const sizes = [
-  { value: '30', label: '30' },
-  { value: '31', label: '31' },
-  { value: '32', label: '32' },
-  { value: '33', label: '33' },
-  { value: '34', label: '34' },
-  { value: '35', label: '35' },
-  { value: '36', label: '36' },
-  { value: '37', label: '37' },
-  { value: '38', label: '38' },
-  { value: '39', label: '39' }
+  { value: "30", label: "30" },
+  { value: "31", label: "31" },
+  { value: "32", label: "32" },
+  { value: "33", label: "33" },
+  { value: "34", label: "34" },
+  { value: "35", label: "35" },
+  { value: "36", label: "36" },
+  { value: "37", label: "37" },
+  { value: "38", label: "38" },
+  { value: "39", label: "39" },
+  { value: "40", label: "40" },
+  { value: "41", label: "41" },
+  { value: "42", label: "42" },
+  { value: "43", label: "43" },
 ];

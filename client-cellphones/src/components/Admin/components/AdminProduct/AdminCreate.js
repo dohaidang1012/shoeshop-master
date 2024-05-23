@@ -18,11 +18,11 @@ function AdminCreate(props) {
 
   const [image, setImage] = useState("");
   const [activeTypeProduct, setActiveTypeproduct] = useState("");
-  const SelectList = useSelector(state => state.selectList.List)
+  const SelectList = useSelector((state) => state.selectList.List);
   const { pages } = useSelector((state) => state.allProduct.product);
   const { List } = useSelector((state) => state.allTypeProduct);
-  const [colorList, setColorList] = useState([])
-  const [sizeList, setSizeList] = useState([])
+  const [colorList, setColorList] = useState([]);
+  const [sizeList, setSizeList] = useState([]);
   useEffect(() => {
     dispatch(getAllSelectList());
   }, [dispatch]);
@@ -37,9 +37,9 @@ function AdminCreate(props) {
 
   const onSubmit = async (data) => {
     let formData = new FormData();
-    if(!activeTypeProduct || !image) {
-      alert('Chưa có hình ảnh và loại giày')
-      return 
+    if (!activeTypeProduct || !image) {
+      alert("Chưa có hình ảnh và loại giày");
+      return;
     }
     formData.append("name", data.name);
     formData.append("price", data.price);
@@ -57,12 +57,12 @@ function AdminCreate(props) {
     formData.append("special", data.special);
     formData.append("design", data.design);
     formData.append("screen", data.screen);
-    colorList?.forEach(color => {
+    colorList?.forEach((color) => {
       formData.append("colors", color);
-    })
-    sizeList?.forEach(size => {
+    });
+    sizeList?.forEach((size) => {
       formData.append("sizes", size);
-    })
+    });
     await dispatch(saveProduct(formData));
     await dispatch(editCurrentPage(pages));
     history.push("/admin/product");
@@ -85,10 +85,10 @@ function AdminCreate(props) {
     setActiveTypeproduct(name);
   };
   const handleChangeSize = (value) => {
-    setSizeList(value)
+    setSizeList(value);
   };
   const handleChangeColor = (value) => {
-    setColorList(value)
+    setColorList(value);
   };
   return (
     <div className="admin-create">
@@ -99,41 +99,51 @@ function AdminCreate(props) {
         encType="multipart/form-data"
       >
         <input required {...register("name")} placeholder="Name"></input>
-        <input required
+        <input
+          required
           {...register("amount")}
           placeholder="Amount"
           type="number"
         ></input>
-        <input required {...register("price")} placeholder="Price" type="number"></input>
-        <input required
+        <input
+          required
+          {...register("price")}
+          placeholder="Price"
+          type="number"
+        ></input>
+        <input
+          required
           {...register("salePrice")}
           placeholder="SalePrice"
           type="number"
         ></input>
-        <input required
+        <input
+          required
           {...register("brand")}
           placeholder="Brand"
           type="string"
         ></input>
-         <Select placeholder="Select color" 
-            mode="multiple"
-            size={'middle'}
-            onChange={handleChangeColor}
-            style={{ width: 200 }} value={colorList}
-            options={colors}
-          />
-          <br />
-          <Select placeholder="Select color"
-            mode="multiple" value={sizeList}
-            size={'middle'}
-            onChange={handleChangeSize}
-            style={{ width: 200 }}
-            options={sizes}
+        <Select
+          placeholder="Select color"
+          mode="multiple"
+          size={"middle"}
+          onChange={handleChangeColor}
+          style={{ width: 200 }}
+          value={colorList}
+          options={colors}
+        />
+        <br />
+        <Select
+          placeholder="Select size"
+          mode="multiple"
+          value={sizeList}
+          size={"middle"}
+          onChange={handleChangeSize}
+          style={{ width: 200 }}
+          options={sizes}
         />
         <div className="filter-menu-firm">
-          {
-            List ? (List.map((item) => MenuFirmProduct(item))) : ''
-          }
+          {List ? List.map((item) => MenuFirmProduct(item)) : ""}
         </div>
 
         {SelectList && SelectList.length > 0
@@ -162,27 +172,31 @@ function AdminCreate(props) {
 
 export default AdminCreate;
 const colors = [
-  { value: 'red', label: 'Red' },
-  { value: 'blue', label: 'Blue' },
-  { value: 'green', label: 'Green' },
-  { value: 'yellow', label: 'Yellow' },
-  { value: 'orange', label: 'Orange' },
-  { value: 'purple', label: 'Purple' },
-  { value: 'pink', label: 'Pink' },
-  { value: 'brown', label: 'Brown' },
-  { value: 'black', label: 'Black' },
-  { value: 'white', label: 'White' }
+  { value: "red", label: "Red" },
+  { value: "blue", label: "Blue" },
+  { value: "green", label: "Green" },
+  { value: "yellow", label: "Yellow" },
+  { value: "orange", label: "Orange" },
+  { value: "purple", label: "Purple" },
+  { value: "pink", label: "Pink" },
+  { value: "brown", label: "Brown" },
+  { value: "black", label: "Black" },
+  { value: "white", label: "White" },
 ];
 
 const sizes = [
-  { value: '30', label: '30' },
-  { value: '31', label: '31' },
-  { value: '32', label: '32' },
-  { value: '33', label: '33' },
-  { value: '34', label: '34' },
-  { value: '35', label: '35' },
-  { value: '36', label: '36' },
-  { value: '37', label: '37' },
-  { value: '38', label: '38' },
-  { value: '39', label: '39' }
+  { value: "30", label: "30" },
+  { value: "31", label: "31" },
+  { value: "32", label: "32" },
+  { value: "33", label: "33" },
+  { value: "34", label: "34" },
+  { value: "35", label: "35" },
+  { value: "36", label: "36" },
+  { value: "37", label: "37" },
+  { value: "38", label: "38" },
+  { value: "39", label: "39" },
+  { value: "40", label: "40" },
+  { value: "41", label: "41" },
+  { value: "42", label: "42" },
+  { value: "43", label: "43" },
 ];
