@@ -25,6 +25,7 @@ function Product(props) {
         <img src={product.image}></img>
       </td>
       <td>{product.name}</td>
+      <td>{product.amount}</td>
       <td>{formatPrice(product.salePrice)}</td>
       <td>{product.brand}</td>
       <td>{product.type}</td>

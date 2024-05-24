@@ -10,7 +10,7 @@ export default function VnPaySuccess() {
   useEffect(() => {
     const getResultVNPay = async () => {
       const query = location.search;
-      if(query == '?00') {
+      if(query == '') {
         setCode('00')
       } else {
         const { data } = await axios.get(`http://localhost:4000/payment/vnpay_return${query}`);

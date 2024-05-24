@@ -30,7 +30,7 @@ export const filterProductByType = expressAsyncHandler(async (req, res) => {
   //     .catch(err => console.log(err))
 
   const filterProductByType = await ProductModel.find({
-    type: req.params.type,
+    brand: req.params.type,
   }).limit(5);
   res.send(filterProductByType);
 });

@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken'
 import multer from "multer";
 import path from "path";
+import nodeMailer from 'nodemailer'
+import asyncHandler from 'express-async-handler'
 
 export const generateToken = (user) => {
   return jwt.sign(
@@ -68,4 +70,27 @@ export function PinComment(arr, fromIndex, toIndex) {
   return arr;
 }
 
+export const sendMail = asyncHandler( async({email, html, subject}) => {
+  console.log(process.env.EMAIL_NAME)
+  console.log(process.env.EMAIL_APP_PASSWORD)
+  const transporter = nodeMailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+      user: process.env.EMAIL_NAME,
+      pass: process.env.EMAIL_APP_PASSWORD
+    }
+  });
+  
+    const info = await transporter.sendMail({
+      from: '"Cửa hàng điện tử" <no-reply@cuahangdientu.com>', // sender address
+      to: email, // list of receivers
+      subject: subject, // Subject line
+      html, // html body
+    });
+  
+    return info
+})
 

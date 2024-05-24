@@ -115,6 +115,7 @@ function AdminUpdate(props) {
   const handleChangeColor = (value) => {
     setColorList(value);
   };
+  console.log(detailProduct)
   return (
     <div className="admin-create">
       <span>Update Product</span>

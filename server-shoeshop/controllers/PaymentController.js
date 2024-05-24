@@ -6,6 +6,9 @@ import sha256 from "sha256";
 import dateFormat from "dateformat";
 import crypto from 'crypto'
 import moment from "moment";
+import { sendMail } from "../untils/until.js";
+import { getHtmlSendMail } from "../untils/htmlsendmail.js";
+import { UserModel } from "../models/UserModel.js";
 
 let tmnCode = process.env.VNP_TMN_CODE;
 let secretKey = process.env.VNP_HASH_SECRET;
@@ -14,7 +17,6 @@ let returnUrl = process.env.VNP_RETURN_URL;
 
 export const createPayment = expressAsyncHandler(async (req, res) => {
   let urlFinal = vnpUrl
-  console.log(req.body)
   const orderItems = req.body.orderItems.map(item => {
     return {
       name: item.name,
@@ -138,6 +140,11 @@ export const returnPayment = expressAsyncHandler(async (req, res) => {
     // res.status(200).json({ code: vnp_Params.vnp_ResponseCode });
     if (secureHash === signed) {
       console.log('if 1')
+      const orderInfo = await OrderModel.findById({ _id: id });
+      const userInfo = await UserModel.findById({_id: orderInfo.user})
+      const html = getHtmlSendMail(orderInfo)
+      const rs = await sendMail({email: userInfo.email, html, subject: 'Xác nhận mail'})
+
       if (vnp_Params.vnp_ResponseCode == "00") {
         console.log('if 2')
         res.status(200).json({ code: vnp_Params.vnp_ResponseCode });

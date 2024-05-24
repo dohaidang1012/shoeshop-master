@@ -32,6 +32,7 @@ function DetailInfo(props) {
                 <p className="price-box">
                     <span className="saleprice">{formatPrice(product.salePrice)}đ</span>
                     <span className="old-price">Giá niêm yết : <strong className="price">{formatPrice(product.price)}đ</strong> </span>
+                    <span className="" style={{marginLeft: 20}}>Còn {product.amount} cái</span>
                 </p>
                 <p className="detail-info-sale">
                     Sản phẩm thuộc chương trình HOT SALE CUỐI TUẦN - Nhanh tay thanh toán!

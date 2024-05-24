@@ -10,29 +10,34 @@ export const getAllUser = (req, res) => {
 
 
 export const registerUser = expressAsyncHandler(async (req, res) => {
-    const user = new UserModel({
-        // _id: req.body._id,
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        address: '',
-        phone: '',
-        isAdmin: false,
-        dailyVisits: [{
-            view: 0,
-            day: Date.now()
-        }]
-    })
-    const createUser = user.save();
-    res.send({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        address: user.address ,
-        phone: user.phone,
-        token: generateToken(user),
-    });
+    try {
+        console.log(req.body)
+        const user = await new UserModel({
+            // _id: req.body._id,
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            address: '',
+            phone: '',
+            isAdmin: false,
+            dailyVisits: [{
+                view: 0,
+                day: Date.now()
+            }]
+        })
+        const createUser = user.save();
+        res.send({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            address: user.address ,
+            phone: user.phone,
+            token: generateToken(user),
+        }); 
+    } catch (error) {
+        res.send({error})
+    }
 })
 
 export const login = expressAsyncHandler(async (req, res) => {

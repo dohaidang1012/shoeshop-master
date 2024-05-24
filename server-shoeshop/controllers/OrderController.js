@@ -2,6 +2,10 @@ import { OrderModel } from "../models/OrderModel.js";
 import expressAsyncHandler from "express-async-handler";
 import axios from "axios";
 import dotenv from "dotenv";
+import { sendMail } from "../untils/until.js";
+import { getHtmlSendMail } from "../untils/htmlsendmail.js";
+import { UserModel } from "../models/UserModel.js";
+import { ProductModel } from "../models/ProductModel.js";
 
 dotenv.config();
 
@@ -49,6 +53,16 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
       name: req.body.name,
       user: req.body.user,
     });
+
+    const userInfo = await UserModel.findById({_id: order.user})
+    
+    const html = getHtmlSendMail(order)
+    const rs = await sendMail({email: userInfo.email, html, subject: 'Xác nhận mail'})
+    for (const item of orderItems) {
+      const product = await ProductModel.findById(item.product._id);
+      product.amount -= item.qty;
+      await product.save();
+    }
 
     const createOrder = await order.save();
     res.status(201).send({ message: "new order created", order: createOrder, code: '00' });

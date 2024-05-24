@@ -37,7 +37,7 @@ const Product = new Schema(
     salePrice: { type: Number, required: true },
     type: { type: String, required: true },
     image: { type: String },
-    amount: Number,
+    amount: {type: Number, default: 100},
     cloudinary_id: { type: String },
     rating: { type: Number },
     numReviews: { type: Number },
@@ -50,14 +50,6 @@ const Product = new Schema(
     colors: [{ type: String }],
     sizes: [{ type: Number }],
 
-    // os: String,
-    // ram: String,
-    // battery: String,
-    // rom: String,
-    // camera: String,
-    // special: String,
-    // design: String,
-    // screen: String,
   },
   {
     timestamps: true,

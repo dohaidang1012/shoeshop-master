@@ -22,7 +22,7 @@ function Login(props) {
     return (
       <div className="signup-page">
         <h2>ĐĂNG KÍ</h2>
-        <form onSubmit={handleSubmit(onSubmit)} classname="form-signup">
+        <form onSubmit={handleSubmit(onSubmit)} className="form-signup">
           <input {...register("name")} placeholder="Name" required></input>
           <input
             {...register("email")}

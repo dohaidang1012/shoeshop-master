@@ -25,6 +25,7 @@ function ListProduct(props) {
           <th></th>
           <th>Image</th>
           <th>Name</th>
+          <th>Amount</th>
           <th>Price</th>
           <th>Brand</th>
           <th>Type</th>
