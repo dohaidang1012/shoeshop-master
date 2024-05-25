@@ -45,6 +45,14 @@ p{
     border: 1px solid #eee;
 }
 
+.size, .color{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.6rem;
+}
+
+
 .hotsale-listproduct-product:hover{
     box-sizing: border-box;
     box-shadow: 0px 0px 5px -1px;

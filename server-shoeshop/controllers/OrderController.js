@@ -13,7 +13,7 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
   if (req.body.orderItems.length === 0) {
     res.status(400).send({ message: "cart is emty" });
   } else {
-    const orderItems = req.body.orderItems.map(item => {
+    const orderItems = req.body.orderItems.map((item) => {
       return {
         name: item.name,
         qty: item.qty,
@@ -21,9 +21,9 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
         salePrice: item.salePrice,
         product: item,
         color: item.colorSelected,
-        size: item.sizeSelected
-      }
-    })
+        size: item.sizeSelected,
+      };
+    });
     const order = new OrderModel({
       order_code: "",
       to_ward_code: req.body.to_ward_code,
@@ -54,10 +54,14 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
       user: req.body.user,
     });
 
-    const userInfo = await UserModel.findById({_id: order.user})
-    
-    const html = getHtmlSendMail(order)
-    const rs = await sendMail({email: userInfo.email, html, subject: 'Xác nhận mail'})
+    const userInfo = await UserModel.findById({ _id: order.user });
+
+    const html = getHtmlSendMail(order);
+    const rs = await sendMail({
+      email: userInfo.email,
+      html,
+      subject: "Xác nhận mail",
+    });
     for (const item of orderItems) {
       const product = await ProductModel.findById(item.product._id);
       product.amount -= item.qty;
@@ -65,24 +69,26 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
     }
 
     const createOrder = await order.save();
-    res.status(201).send({ message: "new order created", order: createOrder, code: '00' });
+    res
+      .status(201)
+      .send({ message: "new order created", order: createOrder, code: "00" });
   }
 });
 
 export const clientCancelOrder = expressAsyncHandler(async (req, res) => {
-  const updateOrder = await OrderModel.findById({_id: req.params.id})
+  const updateOrder = await OrderModel.findById({ _id: req.params.id });
 
-   if(updateOrder){
-    updateOrder.cancelOrder = true
-    await updateOrder.save()
-   }
-   res.send(updateOrder)
+  if (updateOrder) {
+    updateOrder.cancelOrder = true;
+    await updateOrder.save();
+  }
+  res.send(updateOrder);
 });
 
 export const updateOrder = expressAsyncHandler(async (req, res) => {
-  console.log('updateOrder')
+  console.log("updateOrder");
   let updateOrder = await OrderModel.findById({ _id: req.params.id });
-  console.log(updateOrder)
+  console.log(updateOrder);
 
   if (updateOrder) {
     let items = [];
@@ -122,63 +128,64 @@ export const updateOrder = expressAsyncHandler(async (req, res) => {
     // };
 
     const orderGhn = {
-      "payment_type_id": 2,
-      "note": "Tintest 123",
-      "from_name":"Tin",
-      "from_phone":"0909999999",
-      "from_address":"123 Đường 3/2",
-      "from_ward_name":"Phường 5",
-      "from_district_name":"Quận 11",
-      "from_province_name":"TP Hồ Chí Minh",
-      "required_note": "KHONGCHOXEMHANG",
-      "return_name": "Tin",
-      "return_phone": "0909999999",
-      "return_address": "123 Đường 3/2",
-      "return_ward_name": "Phường 5",
-      "return_district_name": "Quận 11",
-      "return_province_name":"TP Hồ Chí Minh",
-      "client_order_code": "",
-      "to_name": updateOrder.name,
-      "to_phone": updateOrder.shippingAddress.phone,
+      payment_type_id: 2,
+      note: "Tintest 123",
+      from_name: "Tin",
+      from_phone: "0909999999",
+      from_address: "123 Đường 3/2",
+      from_ward_name: "Phường 5",
+      from_district_name: "Quận 11",
+      from_province_name: "TP Hồ Chí Minh",
+      required_note: "KHONGCHOXEMHANG",
+      return_name: "Tin",
+      return_phone: "0909999999",
+      return_address: "123 Đường 3/2",
+      return_ward_name: "Phường 5",
+      return_district_name: "Quận 11",
+      return_province_name: "TP Hồ Chí Minh",
+      client_order_code: "",
+      to_name: updateOrder.name,
+      to_phone: updateOrder.shippingAddress.phone,
       to_address: `${updateOrder.shippingAddress.province}, ${updateOrder.shippingAddress.district}, ${updateOrder.shippingAddress.ward}, ${updateOrder.shippingAddress.detail}`,
-      "to_ward_name":updateOrder.shippingAddress.ward,
-      "to_district_name": updateOrder.shippingAddress.district,
-      "to_province_name": updateOrder.shippingAddress.province,
-      "cod_amount": updateOrder.paymentMethod === "payOnline" ? 0 : updateOrder.totalPrice,
-      "content": "Theo New York Times",
-      "weight": 200,
-      "length": 1,
-      "width": 19,
-      "height": 10,
-      "cod_failed_amount": 2000,
-      "pick_station_id": 1444,
-      "deliver_station_id": null,
-      "insurance_value": 10000000,
-      "service_id": 0,
-      "service_type_id":2,
-      "coupon":null,
-      "pick_shift":null,
-      "pickup_time": 1665272576,
-      "items": items
-    }
+      to_ward_name: updateOrder.shippingAddress.ward,
+      to_district_name: updateOrder.shippingAddress.district,
+      to_province_name: updateOrder.shippingAddress.province,
+      cod_amount:
+        updateOrder.paymentMethod === "payOnline" ? 0 : updateOrder.totalPrice,
+      content: "Theo New York Times",
+      weight: 200,
+      length: 1,
+      width: 19,
+      height: 10,
+      cod_failed_amount: 2000,
+      pick_station_id: 1444,
+      deliver_station_id: null,
+      insurance_value: 10000000,
+      service_id: 0,
+      service_type_id: 2,
+      coupon: null,
+      pick_shift: null,
+      pickup_time: 1665272576,
+      items: items,
+    };
     updateOrder.order_code = req.params.id;
     await updateOrder.save();
     res.send(updateOrder);
 
     try {
-      console.log('-----', orderGhn)
+      console.log("-----", orderGhn);
       const { data } = await axios.post(
         "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create",
         orderGhn,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             shop_id: process.env.SHOP_ID,
             token: process.env.TOKEN_GHN,
           },
         }
       );
-      console.log({data})
+      console.log({ data });
 
       const order_code = data.data.order_code;
 
@@ -186,7 +193,7 @@ export const updateOrder = expressAsyncHandler(async (req, res) => {
       await updateOrder.save();
       res.send(updateOrder);
     } catch (error) {
-      console.log({error: error.message})
+      console.log({ error: error.message });
     }
   } else {
     res.send({ msg: "product not found" });
@@ -223,14 +230,11 @@ export const PrintOrderGhn = expressAsyncHandler(async (req, res) => {
         }
       );
       res.send(result.config.url);
-    } catch (error) {
-    }
-    
+    } catch (error) {}
   } else {
-    res.send({message: 'order not found'})
+    res.send({ message: "order not found" });
   }
 });
-
 
 export const GetAllOrder = expressAsyncHandler(async (req, res) => {
   //await OrderModel.remove()
@@ -289,7 +293,7 @@ export const GetAllOrderPaid = expressAsyncHandler(async (req, res) => {
 });
 
 export const DeleteOrder = expressAsyncHandler(async (req, res) => {
-  const deleteOrder = await OrderModel.findById({_id: req.params.id});
+  const deleteOrder = await OrderModel.findById({ _id: req.params.id });
 
   if (deleteOrder) {
     await deleteOrder.remove();
@@ -399,4 +403,3 @@ export const GetAllOrderInAMonth = expressAsyncHandler(async (req, res) => {
     res.status(400).send({ message: "no product in a month" });
   }
 });
-
